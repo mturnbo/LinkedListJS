@@ -1,0 +1,29 @@
+{
+  "name": "@mturnbo/linked-list",
+  "version": "0.1.0",
+  "description": "Singly and doubly linked list data structures for JavaScript.",
+  "type": "module",
+  "main": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "files": [
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node --test"
+  },
+  "keywords": [
+    "linked-list",
+    "data-structures",
+    "singly-linked-list",
+    "doubly-linked-list"
+  ],
+  "author": "Marcus Turnbo",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  }
+}
