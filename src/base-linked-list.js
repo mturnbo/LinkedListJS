@@ -27,7 +27,7 @@ export class BaseLinkedList {
       equals = Object.is,
     } = {},
   ) {
-    if (arguments.length === 0) {
+    if (arguments.length === 0 || (arguments.length >= 2 && initialValue === undefined)) {
       initialValue = MISSING;
     }
 
@@ -147,19 +147,46 @@ export class BaseLinkedList {
     }
 
     const sortValue = this._sortValue(value);
-    if (!isComparable(sortValue)) {
+    if (!isSortablePrimitive(sortValue)) {
       throw new TypeError("Linked list value is not sortable.");
     }
   }
 
   _valuesAreSortable() {
     const values = this.getValues();
-    for (const value of values) {
-      if (!isComparable(this._sortValue(value))) {
+    if (values.length === 0) {
+      return true;
+    }
+
+    const firstSortValue = this._sortValue(values[0]);
+    if (!isSortablePrimitive(firstSortValue)) {
+      throw new TypeError("Linked list values are not sortable.");
+    }
+
+    const sortType = typeof firstSortValue;
+    for (const value of values.slice(1)) {
+      const sortValue = this._sortValue(value);
+      if (!isSortablePrimitive(sortValue) || typeof sortValue !== sortType) {
         throw new TypeError("Linked list values are not sortable.");
       }
     }
+
     return true;
+  }
+
+  _sortValueLessThanOrEqual(left, right) {
+    const leftSortValue = this._sortValue(left);
+    const rightSortValue = this._sortValue(right);
+
+    if (
+      !isSortablePrimitive(leftSortValue)
+      || !isSortablePrimitive(rightSortValue)
+      || typeof leftSortValue !== typeof rightSortValue
+    ) {
+      throw new TypeError("Linked list values are not sortable.");
+    }
+
+    return leftSortValue <= rightSortValue;
   }
 
   _ensureAcyclic(operation) {
@@ -401,8 +428,12 @@ function getNodeId(node) {
   return nodeIds.get(node);
 }
 
-function isComparable(value) {
+function isSortablePrimitive(value) {
   if (value === null || value === undefined) {
+    return false;
+  }
+
+  if (typeof value === "number" && Number.isNaN(value)) {
     return false;
   }
 
