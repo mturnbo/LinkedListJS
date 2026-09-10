@@ -27,7 +27,7 @@ export class BaseLinkedList {
       equals = Object.is,
     } = {},
   ) {
-    if (arguments.length === 0) {
+    if (arguments.length === 0 || (arguments.length >= 2 && initialValue === undefined)) {
       initialValue = MISSING;
     }
 
