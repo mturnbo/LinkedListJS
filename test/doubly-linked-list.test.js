@@ -157,4 +157,5 @@ test("doubly mutating methods reject cyclic lists", () => {
   assert.throws(() => linkedList.popTail(), CycleDetectedError);
   assert.throws(() => linkedList.remove(1), CycleDetectedError);
   assert.throws(() => linkedList.reverse(), CycleDetectedError);
+  assert.throws(() => linkedList.sort(), CycleDetectedError);
 });
